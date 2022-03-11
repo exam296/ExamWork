@@ -1,5 +1,7 @@
 <?php
 
+    include_once "../resources/models/usermodel.php";
+
     class Login {
 
 

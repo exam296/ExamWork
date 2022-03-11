@@ -32,7 +32,7 @@ class User {
 
     function signUp(){
         //Check if teacher or not
-        if($isTeacher){
+        if($this->isTeacher){
             $db = $this->connectDatabase();
         }
     }
