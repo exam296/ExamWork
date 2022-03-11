@@ -1,5 +1,5 @@
 <?php
-    include_once "../resources/boilerplate.php";
+    include_once "../libraries/boilerplate.php";
     echo $blade->run("home");
 
 ?>
