@@ -20,11 +20,8 @@ $(window).on('pageshow', function(){
     function onCheckboxChange(e){
         if($(e)[0].checked){
             //If signing up
-            $("#loginFullNameBox").attr("class",boxClasses);
-            $("#loginFullNameBox").fadeIn(400);
-            $("#loginAgeBox").attr("class",boxClasses);
-            $("#loginAgeBox").fadeIn(400);
-            
+            $("#loginFullNameBox, #loginAgeBox").attr("class",boxClasses).fadeIn(400);
+            $("#loginIsTeacher").attr("class", checkClasses).fadeIn(400);
             //Change Header and button Text
             $("#loginPageHeader, #loginSignUpButton").fadeOut(200,function(){
                 $(this).text("Sign Up");
@@ -36,9 +33,8 @@ $(window).on('pageshow', function(){
         }
         else{
             //If loggin in
-            $("#loginFullNameBox").fadeOut(400,function(){$(this).removeClass()});
-            $("#loginAgeBox").fadeOut(400,function(){$(this).removeClass()});
-
+            $("#loginFullNameBox, #loginAgeBox, #loginIsTeacher").fadeOut(400,function(){$(this).removeClass()});
+            
             //Change Header and button Text
             $("#loginPageHeader, #loginSignUpButton").fadeOut(200,function(){
                 $(this).text("Login");
@@ -61,6 +57,7 @@ $(window).on('pageshow', function(){
 
     
     var boxClasses = $("#loginFullNameBox").attr("class");
+    var checkClasses = $("#loginIsTeacher").attr("class");
     $("#loginIsSigningUpCheckbox").change(function(){
         onCheckboxChange(this);
     });

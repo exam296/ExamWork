@@ -29,6 +29,8 @@
                 return "invalidEmail";
             }
 
+
+
             //First, create a new user
             $user = new User();
 
@@ -38,14 +40,24 @@
                 $signUp = true;
             }
 
+                        
+
             if($signUp){
+                echo phpversion();
                 //To sign up, validate inputs for full name and age
                 $validName = $this->validateInput($this->postData["fullName"]);
+
+                //Make sure the full name contains spaces
+                // if(!str_contains($validName, " ")){
+                //     return "invalidName";
+                // }
+
                 $dateOfBirth = new DateTime($this->validateInput($this->postData["dateOfBirth"]));
                 $today = new DateTime();
                 $difference = $today->diff($dateOfBirth);
                 $age = $difference->y;
-                if($age > 100 || $age < 0){
+                echo "a";
+                if($age > 120 || $age < 0){
                     return "invalidAge";
                 }
 
@@ -54,11 +66,12 @@
 
                 //Populate the user model
                 $user->setFullName($validName);
-                $user->setDateOfBirth($dateOfBirth);
+                $user->setDateOfBirth($dateOfBirth->format("d-m-Y"));
                 $user->setEmail($this->email);
                 $user->hashAndSetPassword($this->postData["password"]);
                 $user->setTeacher($isTeacher);
-                $user->signUp();
+                $status = $user->signUp();
+                return $status;
 
                 
                 
