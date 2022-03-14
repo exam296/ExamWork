@@ -17,29 +17,29 @@ $(window).on('pageshow', function(){
     });
 
     //Login page buttons
-    function onCheckboxChange(e){
+    function onCheckboxChange(e, delay){
         if($(e)[0].checked){
             //If signing up
-            $("#loginFullNameBox, #loginAgeBox").attr("class",boxClasses).fadeIn(400);
-            $("#loginIsTeacher").attr("class", checkClasses).fadeIn(400);
+            $("#loginFullNameBox, #loginAgeBox").attr("class",boxClasses).fadeIn(delay);
+            $("#loginIsTeacher").attr("class", checkClasses).fadeIn(delay);
             //Change Header and button Text
-            $("#loginPageHeader, #loginSignUpButton").fadeOut(200,function(){
+            $("#loginPageHeader, #loginSignUpButton").fadeOut(delay/2,function(){
                 $(this).text("Sign Up");
                 $(this).attr("value", "Sign Up");
-                $(this).fadeIn(400);
+                $(this).fadeIn(delay);
             });
         
 
         }
         else{
             //If loggin in
-            $("#loginFullNameBox, #loginAgeBox, #loginIsTeacher").fadeOut(400,function(){$(this).removeClass()});
+            $("#loginFullNameBox, #loginAgeBox, #loginIsTeacher").fadeOut(delay,function(){$(this).removeClass()});
             
             //Change Header and button Text
-            $("#loginPageHeader, #loginSignUpButton").fadeOut(200,function(){
+            $("#loginPageHeader, #loginSignUpButton").fadeOut(delay/2,function(){
                 $(this).text("Login");
                 $(this).attr("value", "Login");
-                $(this).fadeIn(400);
+                $(this).fadeIn(delay);
             });
         }
     }
@@ -48,9 +48,9 @@ $(window).on('pageshow', function(){
 
     if(params.get("sign")==="1"){
         $("#loginIsSigningUpCheckbox").prop("checked", true);
-        onCheckboxChange($("#loginIsSigningUpCheckbox"));
+        onCheckboxChange($("#loginIsSigningUpCheckbox"), 0);
     }else{    
-        onCheckboxChange($("#loginIsSigningUpCheckbox"));
+        onCheckboxChange($("#loginIsSigningUpCheckbox"), 0);
     }
 
 
@@ -59,7 +59,7 @@ $(window).on('pageshow', function(){
     var boxClasses = $("#loginFullNameBox").attr("class");
     var checkClasses = $("#loginIsTeacher").attr("class");
     $("#loginIsSigningUpCheckbox").change(function(){
-        onCheckboxChange(this);
+        onCheckboxChange(this, 400);
     });
     
 });

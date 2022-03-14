@@ -48,4 +48,4 @@
  <div style="height: 5vh;"></div>
  
 <?php $this->stopSection(); ?>
-<?php if (isset($_shouldextend[1])) { echo $this->runChild('layouts.notlogged'); } ?>
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('layouts.nonpersonal'); } ?>

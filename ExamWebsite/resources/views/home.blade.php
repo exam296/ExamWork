@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-@extends('layouts.notlogged')
+@extends('layouts.nonpersonal')
  
 @section('title', 'Home')
 

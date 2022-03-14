@@ -32,7 +32,7 @@
 
 
             //First, create a new user
-            $user = new User();
+            $this->user = new User();
 
             //Next, check whether the user is trying to log in or sign up
             $signUp = false;
@@ -43,7 +43,7 @@
                         
 
             if($signUp){
-                echo phpversion();
+                $user = $this->user;
                 //To sign up, validate inputs for full name and age
                 $validName = $this->validateInput($this->postData["fullName"]);
 
@@ -68,14 +68,27 @@
                 $user->setFullName($validName);
                 $user->setDateOfBirth($dateOfBirth->format("d-m-Y"));
                 $user->setEmail($this->email);
+                //Password is taken from postData to minimise storage of the unhashed value.
                 $user->hashAndSetPassword($this->postData["password"]);
                 $user->setTeacher($isTeacher);
                 $status = $user->signUp();
                 return $status;
 
-                
-                
+            }else{
+                //The User is Logging in
+                $user->setEmail($this->email);
+                $user->hashAndSetPassword($this->postData["password"]);
+                $status = $user->login();
+                return $status;
             }
+
+        }
+
+
+
+        function toSession(){
+            //To be run after session created
+            $_SESSION["User"] = serialize($this->user);
         }
 
         //Help from W3Schools (https://www.w3schools.com/php/php_form_url_email.asp)
