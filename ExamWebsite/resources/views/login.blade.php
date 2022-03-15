@@ -5,50 +5,53 @@
 
 @section('content')
 
-<!--Back Button-->
-<a data-redir-loc="index.php">
-<span class="border rounded mx-3 my-3 px-2 position-fixed d-flex" style="cursor: pointer;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-left my-2" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-    </svg>
-    <p class="lead my-2">Go Back</p>
-</span>
-</a>
+@section('back-redir', 'index.php')
+
 <!--Login Form-->
 <div class="d-flex flex-column">
-    <div class="container border rounded shadow-lg text-light mw-100 mh-100 h-50 w-50 mt-5">
-        <h3 class="display-6 text-center mt-2" id="loginPageHeader">Sign Up</h3>
-        <p class="lead text-center @if(count($status)) text-warning @endif" id="loginDesc">
 
-            @if(in_array('userExists', $status))
-             This user already exists. 
+    <div class="container border rounded shadow-lg text-light mw-100 mh-100 h-50 w-50 mt-2">
+        <h3 class="display-6 text-center mt-2" id="loginPageHeader">Sign Up</h3>
+        <p class="lead text-center @if(count($status)&&$status[0]!="success") text-warning @endif" id="loginDesc">
+
+            @if(count($status)>1)
+            Please check the fields below and try again.
+            @elseif(in_array('userExists', $status))
+            This user already exists. 
+            @elseif(in_array('invalidEmail', $status))
+            The email entered is invalid.
             @elseif(in_array('invalidAge', $status))
-             Please check age and try again.
-            @else Start Learning @endif</p>
+            Please check age and try again.
+            @elseif(in_array('noUser', $status))
+            User not found or details incorrect.
+            @elseif(in_array('passIncorrect', $status))
+            Incorrect password.
+            @else Start Learning 
+            @endif</p>
 
         <form action="login.php?sign={{$isSigning}}" method="POST">
 
 
             <!--Email box-->
             <div class="form-group d-inline-flex mw-100 w-100 mt-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-envelope flex-shrink-0 @if(in_array('userExists', $status)) text-warning @endif" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-envelope flex-shrink-0 @if(in_array('userExists', $status) || in_array('invalidEmail', $status) || in_array('noUser', $status)) text-warning @endif" viewBox="0 0 16 16">
                     <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
                 </svg>
-                <input type="email" name="email" id="emailBox" class="form-control flex-shrink-1 mx-3" placeholder="Email Address"/>
+                <input type="email" name="email" id="emailBox" class="form-control flex-shrink-1 mx-3" placeholder="Email Address" value="{{$emailAutoFill}}"/>
             </div> 
             <!--Password box-->
             <div class="form-group d-inline-flex mw-100 w-100 mt-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-lock flex-shrink-0" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-lock flex-shrink-0 @if(in_array('invalidPassword', $status) || in_array('passIncorrect', $status)) text-warning @endif" viewBox="0 0 16 16">
                     <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
                 </svg>
                 <input type="password" name="password" class="form-control flex-shrink-1 mx-3" placeholder="Password"/>
             </div>
             <!--Full Name box-->
             <div class="form-group d-inline-flex mw-100 w-100 mt-2" id="loginFullNameBox">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person flex-shrink-0" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-person flex-shrink-0 @if(in_array('invalidName', $status)) text-warning @endif" viewBox="0 0 16 16">
                     <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                 </svg>
-                <input type="text" name="fullName" class="form-control flex-shrink-1 mx-3" placeholder="Full Name"/>
+                <input type="text" name="fullName" class="form-control flex-shrink-1 mx-3" placeholder="Full Name" value="{{$nameAutoFill}}"/>
             </div>
             <!--Age box-->
             <div class="form-group d-inline-flex mw-100 w-100 mt-2" id="loginAgeBox">
@@ -57,7 +60,7 @@
                     <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
                 </svg>
                 <!--Suggested from https://stackoverflow.com/questions/20321202/not-showing-placeholder-for-input-type-date-field -->
-                <input placeholder="Date of Birth" id="dateOfBirth" name="dateOfBirth" class="form-control flex-shrink-1 mx-3" type="text" onfocus="(this.type='date')" onblur="(this.type='text')"/>
+                <input placeholder="Date of Birth" id="dateOfBirth" name="dateOfBirth" class="form-control flex-shrink-1 mx-3" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{$dateAutoFill}}"/>
 
             </div>
 
@@ -82,3 +85,5 @@
 
     </div>
 </div>
+
+@endsection

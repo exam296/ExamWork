@@ -7,5 +7,5 @@
 
 
 
-    echo $blade->run("signedup", array("user" => $user));
+    echo $blade->run("loggedin", array("user" => $user));
 ?>

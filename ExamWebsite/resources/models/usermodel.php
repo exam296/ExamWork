@@ -8,6 +8,7 @@ class User {
         $this->email = "";
         $this->passwordHash = "";
         $this->isTeacher = false;
+        $this->userId = 0;
     }
 
     function setFullName($fullName){
@@ -40,9 +41,11 @@ class User {
 
 
     function signUp(){
+        //Connect DB
+        $db = $this->connectDatabase();
+
         //Check if teacher or not
         if($this->isTeacher){
-            $db = $this->connectDatabase();
 
             //Escape strings to be safe
             $this->fullName = $db->real_escape_string($this->fullName);
@@ -59,17 +62,15 @@ class User {
             VALUES 
             (NULL, '$this->fullName', $this->dateOfBirth, '$this->email', '$this->passwordHash', $currentDate)
             SQL;
-            print("<br>");
-            print($sql);
+
+            //Check if user exists
+            if($this->getUserType($db)!="none"){
+                return "userExists";
+            }
             
-            try{
-                $db->query($sql);
-            }
-            catch(mysqli_sql_exception $e){
-                if($e->getCode()===1062){
-                    return "userExists";
-                }
-            }
+            $db->query($sql);
+
+            $userId = $this->getUserId($db, $this->email);
 
             //Clear hash as this is serialised.
             $this->passwordHash = "";
@@ -80,7 +81,7 @@ class User {
         }
         else{
             //Student
-            $db = $this->connectDatabase();
+
 
             //Escape strings to be safe
             $this->fullName = $db->real_escape_string($this->fullName);
@@ -88,26 +89,24 @@ class User {
 
             //Current date
             $currentDate = new DateTime();
-            $currentDate = $currentDate->format("d-m-Y");
+            $currentDate = $currentDate->format("Y-m-d");
             
             //SQL to try and insert the user data
             $sql = <<<SQL
-            INSERT INTO students
-            (ID, StudentName, StudentDateOfBirth, StudentEmail, StudentPasswordHash, DateCreated) 
-            VALUES 
-            (NULL, '$this->fullName', $this->dateOfBirth, '$this->email', '$this->passwordHash', $currentDate)
-            SQL;
-            print("<br>");
-            print($sql);
-            
-            try{
-                $db->query($sql);
-            }
-            catch(mysqli_sql_exception $e){
-                if($e->getCode()===1062){
+                INSERT INTO students
+                (ID, StudentName, StudentDateOfBirth, StudentEmail, StudentPasswordHash, DateCreated) 
+                VALUES 
+                (NULL, '$this->fullName', '$this->dateOfBirth', '$this->email', '$this->passwordHash', '$currentDate')
+                SQL;
+
+
+                $userType = $this->getUserType($db);
+
+                if($userType!="none"){
                     return "userExists";
                 }
-            }
+            
+                $db->query($sql);
 
             //Clear hash as this is serialised.
             $this->passwordHash = "";
@@ -116,7 +115,137 @@ class User {
         }
     }
 
+
+
+    function login($password){
+        $db = $this->connectDatabase();
+        
+        $this->email = $db->real_escape_string($this->email);
+
+        //Figure out if the user is a student or teacher
+        $userType = $this->getUserType($db);
+
+        if($userType=="none"){
+            return "noUser";
+        }
+        elseif($userType=="student"){
+            $sql = <<<SQL
+                SELECT * FROM students WHERE StudentEmail = "$this->email"
+                SQL;
+            
+            $result = $db->query($sql);
+            $row = $result->fetch_assoc();
+            $dbHash = $row["StudentPasswordHash"];
+
+            //Compare passwords
+            $passMatch = password_verify($password, $dbHash);
+
+            if($passMatch){
+                //Set user details from row
+                $this->setFullName($row["StudentName"]);
+                $this->setDateOfBirth($row["StudentDateOfBirth"]);
+                $this->setTeacher(false);
+                return "loggedIn";
+
+            }else{
+                return "passIncorrect";
+            }
+
+        }
+        elseif($userType=="teacher"){
+            $sql = <<<SQL
+                SELECT * FROM teachers WHERE TeacherEmail = "$this->email"
+                SQL;
+            
+            $result = $db->query($sql);
+            $row = $result->fetch_assoc();
+            $dbHash = $row["TeacherPasswordHash"];
+
+            //Compare passwords
+            $passMatch = password_verify($password, $dbHash);
+            if($passMatch){
+                //Set user details from row
+                $this->setFullName($row["TeacherName"]);
+                $this->setDateOfBirth($row["TeacherDateOfBirth"]);
+                $this->setTeacher(true);
+                $this->userId = $this->getUserId($db, $this->email);
+                return "loggedIn";
+
+            }else{
+                return "passIncorrect";
+            }            
+        }
+
+    }
+
+
+
+    function getUserType($db){
+        //Check if the user is a student or teacher
+        //or if the user doesnt exist at all
+
+        $userType = "none";
+
+        $studentSql = <<<SQL
+            SELECT * FROM students WHERE StudentEmail = "$this->email"
+            SQL;
+        
+        $teacherSql = <<<SQL
+            SELECT * FROM teachers WHERE TeacherEmail = "$this->email"
+            SQL;
+
+        //Student first
+        $result = $db->query($studentSql);
+        $result = $result->fetch_assoc();
+        $userType = "student";
+
+        if(!$result){
+            //User is not student, Try teacher
+            $result = $db->query($teacherSql);
+            $result = $result->fetch_assoc();
+            $userType = "teacher";
+            //User is not teacher. User doesn't exist
+            if(!$result){
+                $userType="none";
+            }
+        }
+        
+        return $userType;
+
+    }
+
+    function getUserId($db, $email){
+
+
+        $userId = 0;
+        $sql = "";
+        $userType = $this->getUserType($db);
+
+        if($userType == "teacher"){
+            $sql = <<<SQL
+            SELECT ID FROM teachers WHERE TeacherEmail = "$this->email"
+            SQL;
+        }else if ($userType == "student"){
+        $sql = <<<SQL
+            SELECT ID FROM students WHERE StudentEmail = "$this->email"
+            SQL;
+        }
+        else{
+            return -1;
+        }
+
+        $result = $db->query($sql);
+        $userId = $result->fetch_assoc()["ID"];
+        return $userId;
+
+    }
+
+
+
     //---------------------------------
+
+
+
     function connectDatabase(){
         $db = new mysqli("localhost", "GibJohn", "Z4yrJvyG)qaqsFFH", "gibjohn");
         if($db->connect_errno){

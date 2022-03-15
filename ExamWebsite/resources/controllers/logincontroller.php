@@ -25,8 +25,11 @@
 
         function process(){
 
+            $status = [];
+
             if(!$this->emailValid){
-                return "invalidEmail";
+                array_push($status, "invalidEmail");
+                return $status;
             }
 
 
@@ -43,45 +46,76 @@
                         
 
             if($signUp){
-                $user = $this->user;
-                //To sign up, validate inputs for full name and age
-                $validName = $this->validateInput($this->postData["fullName"]);
-
-                //Make sure the full name contains spaces
-                // if(!str_contains($validName, " ")){
-                //     return "invalidName";
-                // }
-
-                $dateOfBirth = new DateTime($this->validateInput($this->postData["dateOfBirth"]));
-                $today = new DateTime();
-                $difference = $today->diff($dateOfBirth);
-                $age = $difference->y;
-                echo "a";
-                if($age > 120 || $age < 0){
-                    return "invalidAge";
-                }
-
-                //Check if the user is a student or a teacher
-                $isTeacher = array_key_exists("isTeacher", $this->postData);
-
-                //Populate the user model
-                $user->setFullName($validName);
-                $user->setDateOfBirth($dateOfBirth->format("d-m-Y"));
-                $user->setEmail($this->email);
-                //Password is taken from postData to minimise storage of the unhashed value.
-                $user->hashAndSetPassword($this->postData["password"]);
-                $user->setTeacher($isTeacher);
-                $status = $user->signUp();
+                $status = array_merge($status, $this->signUp());
                 return $status;
-
             }else{
-                //The User is Logging in
-                $user->setEmail($this->email);
-                $user->hashAndSetPassword($this->postData["password"]);
-                $status = $user->login();
+                $status = array_merge($status, $this->login());
                 return $status;
             }
 
+        }
+
+        function signUp(){
+
+            //Status starts empty, error messages are appended
+            $status = [];
+
+            $user = $this->user;
+            //To sign up, validate inputs for full name and age
+            $validName = $this->validateInput($this->postData["fullName"]);
+
+            //Make sure the full name contains spaces
+            if(!str_contains($validName, " ")){
+                array_push($status, "invalidName");
+            }
+
+            $dateOfBirth = new DateTime($this->validateInput($this->postData["dateOfBirth"]));
+            $today = new DateTime();
+            $difference = $today->diff($dateOfBirth);
+            $age = $difference->y;
+            
+
+            if($age > 120 || $age < 4){
+                array_push($status, "invalidAge");
+            }
+
+            //Password length
+            if(strlen($this->postData["password"]) < 6 || strlen($this->postData["password"]) > 32){
+                array_push($status, "invalidPassword");
+            }
+
+            if(count($status)>0){
+                //Return with errors
+                return $status;
+            }
+
+            //Check if the user is a student or a teacher
+            $isTeacher = array_key_exists("isTeacher", $this->postData);
+
+            //Populate the user model
+            $user->setFullName($validName);
+            $user->setDateOfBirth($dateOfBirth->format("Y-m-d"));
+            $user->setEmail($this->email);
+
+            //Password is taken from postData to minimise storage of the unhashed value.
+            $user->hashAndSetPassword($this->postData["password"]);
+            $user->setTeacher($isTeacher);
+
+            //Sign Up
+            array_push($status, $user->signUp());
+            return $status;
+        }
+
+        function login(){
+                //Status starts empty, error messages are appended
+                $status = [];
+                $user = $this->user;
+
+
+                //The User is Logging in
+                $user->setEmail($this->email);
+                array_push($status, $user->login($this->postData["password"]));
+                return $status;
         }
 
 

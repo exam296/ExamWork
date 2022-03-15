@@ -4,9 +4,13 @@
     include_once "../libraries/boilerplate.php";
     include_once "../resources/controllers/logincontroller.php";
  
-    $statusMessages = [];
+    $status = [];
 
     $isSigning = "0";
+
+    $emailAutoFill = "";
+    $nameAutoFill = "";
+    $dateAutoFill = "";
 
     if(sizeof($_POST)>0){
         //There is POST data, make sure it is the right data
@@ -14,27 +18,40 @@
 
         $status = $login->process();
 
-        if($status != "signedUp" && $status != "loggedIn"){
-            array_push($statusMessages,$status);
+        if(!in_array("signedUp", $status) && !in_array("loggedIn", $status)){
             session_abort();
         }else{
             $login->toSession();
         }
 
 
-        if($status == "signedUp"){
-            header("Location: signedUp.php");
+        if(in_array("signedUp",$status)){
+            header("Location: signedup.php");
         }
-        else if($status == "loggedIn"){
-            header("Location: dashboard.php");
+        else if(in_array("loggedIn", $status)){
+            header("Location: loggedin.php");
         }
 
-
-        if($status){
-            $isSigning = "1";
+        //Autofill
+        if(array_key_exists("email", $_POST)){
+            $emailAutoFill = $_POST["email"];
         }
+
+        if(array_key_exists("name", $_POST)){
+            $nameAutoFill = $_POST["fullName"];
+        }
+        if(array_key_exists("dateOfBirth", $_POST)){
+            $dateAutoFill = $_POST["dateOfBirth"];
+        }
+
     }
-    echo $blade->run("login", array("status" => $statusMessages, "isSigning"=>$isSigning));
+
+    if(array_key_exists("sign", $_GET) && $_GET["sign"]==1 || array_key_exists("isSigning", $_POST)){
+        $isSigning = "1";
+
+    }
+
+    echo $blade->run("login", array("status" => $status, "isSigning"=>$isSigning, "emailAutoFill"=>$emailAutoFill, "nameAutoFill"=>$nameAutoFill, "dateAutoFill"=>$dateAutoFill));
 
 
 

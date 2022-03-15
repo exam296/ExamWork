@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 @extends('layouts.nonpersonal')
  
 @section('title', 'About')

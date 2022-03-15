@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php $_shouldextend[1]=1; ?>
  
 <?php $this->startSection('title', 'About'); ?>
@@ -12,4 +11,4 @@
 
 
 <?php $this->stopSection(); ?>
-<?php if (isset($_shouldextend[1])) { echo $this->runChild('layouts.notlogged'); } ?>
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('layouts.nonpersonal'); } ?>
