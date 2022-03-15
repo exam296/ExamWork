@@ -12,7 +12,7 @@
                 <div class="d-flex flex-column align-items-center">
                     <span class="lead">Student</span>
                     <span>Level <span class="text-primary">5</span></span>
-                    <span><span class="text-primary">3</span> Tasks due</span>
+                    <span><span class="text-primary">{{count($tasks)}}</span> Tasks due</span>
                     
                     <span>
                 </div>
