@@ -19,12 +19,21 @@
 </div>
 
 <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+
+<?php if(!count($tasks)): ?>
+
+<div class="px-3 py-2 m-2 rounded border">
+ <div class="fs-4 text-wrap" style="width: 20rem">You have no set tasks.</div>
+
+</div>
+<?php endif; ?>
+
 <?php $this->stopSection(); ?>
 
 <?php $this->startSection('messages'); ?>
 
 <div class="px-3 py-2 m-2 rounded border">
- <div class="fs-4 text-wrap" style="width: 20rem">You have no new messages or feedback.</div>
+ <div class="fs-4 text-wrap" style="width: 20rem">You have no new feedback.</div>
 
 </div>
 
@@ -55,7 +64,7 @@
  <?php echo $this->yieldContent('task'); ?>
  </div>
  <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">
- <span class="display-6 text-center px-4 py-2">Messages</span>
+ <span class="display-6 text-center px-4 py-2">Feedback</span>
  <?php echo $this->yieldContent('messages'); ?>
  </div>
  <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">

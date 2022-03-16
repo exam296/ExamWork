@@ -18,12 +18,21 @@
 </div>
 
 @endforeach
+
+@if(!count($tasks))
+
+<div class="px-3 py-2 m-2 rounded border">
+  <div class="fs-4 text-wrap" style="width: 20rem">You have no set tasks.</div>
+
+</div>
+@endif
+
 @endsection
 
 @section('messages')
 
 <div class="px-3 py-2 m-2 rounded border">
-  <div class="fs-4 text-wrap" style="width: 20rem">You have no new messages or feedback.</div>
+  <div class="fs-4 text-wrap" style="width: 20rem">You have no new feedback.</div>
 
 </div>
 
@@ -54,7 +63,7 @@
     @yield('task')
   </div>
   <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">
-    <span class="display-6 text-center px-4 py-2">Messages</span>
+    <span class="display-6 text-center px-4 py-2">Feedback</span>
     @yield('messages')
   </div>
   <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">
