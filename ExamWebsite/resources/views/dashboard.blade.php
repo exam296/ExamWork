@@ -2,7 +2,7 @@
 
 @foreach($tasks as $task)
 
-<div class="px-3 py-2 m-2 rounded border">
+<div class="px-3 py-2 m-2 rounded border item-box">
   <span><span class="fs-4">{{$task["name"]}}</span> - <a class="fw-bold fs-6" style="text-decoration: none; cursor: pointer;"> {{$task["setBy"]}} </a></span>
   <span style="float: right;"><span class="text-primary fs-6 fw-light">{{$task["points"]}}</span> points</span>
   <br>
@@ -23,7 +23,8 @@
 @section('messages')
 
 <div class="px-3 py-2 m-2 rounded border">
-  <span class="fs-4">You have no new messages or feedback.</span>
+  <div class="fs-4 text-wrap" style="width: 20rem">You have no new messages or feedback.</div>
+
 </div>
 
 @endsection
@@ -47,18 +48,18 @@
 
 
 @section('content')
-<div class="d-flex justify-content-center align-items-start">
-  <div class="w-25 mw-100 bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3">
+<div class="d-flex justify-content-center align-items-start flex-wrap">
+  <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">
     <span class="display-6 text-center px-4 py-2">Tasks</span>
     @yield('task')
   </div>
-  <div class="w-25 mw-100 bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3">
-    <span class="display-6 text-center px-4 py-2">Leaderboard</span>
-    @yield('leaderboard')
-  </div>
-  <div class="w-25 mw-100 bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3">
+  <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">
     <span class="display-6 text-center px-4 py-2">Messages</span>
     @yield('messages')
+  </div>
+  <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">
+    <span class="display-6 text-center px-4 py-2">Leaderboard</span>
+    @yield('leaderboard')
   </div>
   </div>
   
