@@ -1,7 +1,7 @@
 
 <?php
     session_start();
-    session_destroy();
+    
     include_once "../libraries/boilerplate.php";
     include_once "../resources/controllers/logincontroller.php";
  
@@ -45,6 +45,8 @@
             $dateAutoFill = $_POST["dateOfBirth"];
         }
 
+    }else{
+        session_destroy();
     }
 
     if(array_key_exists("sign", $_GET) && $_GET["sign"]==1 || array_key_exists("isSigning", $_POST)){
