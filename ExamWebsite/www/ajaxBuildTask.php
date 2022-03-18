@@ -27,6 +27,6 @@
 
     $questions = $taskBuilder->getQuestions();
 
-    echo $blade->run("ajax.taskmodal", array("user" => $user, "task"=>$task, "questions"=>$test));
+    echo $blade->run("ajax.taskmodal", array("user" => $user, "task"=>$task, "questions"=>$questions));
 
 ?>
