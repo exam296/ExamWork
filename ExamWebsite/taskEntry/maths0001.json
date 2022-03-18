@@ -1,3 +1,11 @@
 {
-	"test": "This is a JSON entry for the maths0001 task!"
+	"title": "Adding Two Numbers",
+	"description": "Try and add as many numbers as you can.",
+	"questions": {
+		"1": {
+			"type": "text",
+			"question": "15+3?",
+			"answer": "18"
+		}
+	}
 }

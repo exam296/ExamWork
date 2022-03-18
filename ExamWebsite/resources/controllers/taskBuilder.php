@@ -9,6 +9,7 @@ class TaskBuilder{
     
     function __construct($task) {
         $this->task = $task;
+        $this->questions = [];
     }
 
     function readTaskFile(){
@@ -16,8 +17,20 @@ class TaskBuilder{
         $taskFileContents = file_get_contents(__DIR__ . $taskFile, FILE_USE_INCLUDE_PATH);
         $taskJson = json_decode($taskFileContents, true);
 
+        
 
-        return $taskJson["test"];
+        //Push questions from JSON into array
+        for($i=0; $i<count($taskJson["questions"]); $i++){
+            array_push($this->questions, $taskJson["questions"][$i+1]);
+        }
+
+
+        //array_push($questions, )
+
+    }
+
+    function getQuestions(){
+        return $this->questions;
     }
 
 
