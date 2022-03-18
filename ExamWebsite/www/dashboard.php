@@ -7,7 +7,7 @@
     if(array_key_exists("User", $_SESSION)){
 
         $user = unserialize($_SESSION["User"]);
-        $task = new Task();
+        $task = new Tasks();
         echo $blade->run("dashboard", array("page"=>"dashboard", "user"=>$user, "tasks"=>$task->getStudentTasks($user)));
 
     }

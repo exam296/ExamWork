@@ -1,5 +1,5 @@
 <?php
-    class Task {
+    class Tasks {
 
         function getStudentTasks($user){
             $sql = "";
@@ -51,7 +51,7 @@
                     $result = $db->query($sql);
                     $task = $result->fetch_assoc();
                     //Finally, Populate tasks array
-                    array_push($tasks,  array("name"=>$task["TaskSubject"], "description"=>$task["TaskDescription"], "setBy"=>$teacherName, "points"=>$task["TaskPoints"], "dueBy"=>$taskDueDate));
+                    array_push($tasks,  array("id"=>$taskId, "name"=>$task["TaskSubject"], "description"=>$task["TaskDescription"], "setBy"=>$teacherName, "points"=>$task["TaskPoints"], "dueBy"=>$taskDueDate, "fileIdentifier"=>$task["TaskFileIdentifier"]));
                 
 
                 }   
@@ -61,8 +61,10 @@
 
 
             //Sort tasks by points
-            //$points = array_column($tasks, 'points');
-            //array_multisort($points, SORT_DESC, $tasks);
+            $points = array_column($tasks, 'points');
+            array_multisort($points, SORT_DESC, $tasks);
+
+            
 
             return $tasks;
         }

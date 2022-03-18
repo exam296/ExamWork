@@ -30,9 +30,12 @@
  <!--Modal space-->
  <div id="modal-space"></div>
 
+ <!--Loading screen-->
+ <div id="page-load">
  <div class="fixed-top mw-100 w-100 mh-100 h-100 bg-dark d-flex justify-content-center align-items-center" style="opacity: 0.8" id="loading-screen">
- <div class="spinner-border text-primary display-3" role="status"></div>
-</div>
+ <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status"></div>
+ </div>
+ </div>
  
 <?php $this->stopSection(); ?>
 

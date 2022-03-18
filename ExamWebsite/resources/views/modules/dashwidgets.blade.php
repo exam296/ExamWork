@@ -2,7 +2,7 @@
 
 @foreach($tasks as $task)
 
-<div class="px-3 py-2 m-2 rounded border item-box" onclick="">
+<div class="px-3 py-2 m-2 rounded border item-box" data-task-id="{{$task["id"]}}">
   <span><span class="fs-4 item-box-name">{{$task["name"]}}</span> - <a class="fw-bold fs-6" style="text-decoration: none; cursor: pointer;"> {{$task["setBy"]}} </a></span>
   <span style="float: right;"><span class="text-primary fs-6 fw-light">{{$task["points"]}}</span> points</span>
   <br>

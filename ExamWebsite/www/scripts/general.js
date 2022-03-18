@@ -1,9 +1,6 @@
 var modalHtml = "";
 
-var ajaxRequestTask = function(userTaskIndex){
-    $.ajax({url: "ajaxBuildTask.php", success: function(result){modalHtml = result;}});
-    return modalHtml;
-}
+
 
 
 
@@ -12,7 +9,7 @@ $(window).on('pageshow', function(){
         $(this).fadeIn(400);
     });
 
-
+    $("#page-load").fadeOut(0);
 
     //Page redirect function
     //If a button is clicked and has the data attribute 'redir-loc:', use JQuery to fade out the page
@@ -26,17 +23,45 @@ $(window).on('pageshow', function(){
 
     console.log("A");
 
-    $(".item-box").on("click", function(){
 
-        let modal = ajaxRequestTask();
-        
-        $("#modal-space").html(modal);
-        let taskModal = $("#taskModal");
-        console.log(modal);
-        taskModal.modal("show");
-    
-    });
 
 
 
 });
+
+
+//Async stuff
+$(function(){
+    $(".item-box").on("click", function(){
+
+        
+        $("#page-load").fadeIn(100);
+        $.ajax(
+            {
+                type: "POST",
+                url: "ajaxBuildTask.php",
+                data: {"taskId": $(this).attr("data-task-id")},
+
+                success: function(result){ 
+                    $("#page-load").fadeOut(100);
+                    console.log(result);
+                    modalHtml = result;
+                },
+
+                failure: function(){
+                    $("#page-load").fadeOut(100)
+                }
+            })
+            
+              .then(function(){
+                $("#modal-space").html(modalHtml);
+                let taskModal = $("#taskModal");
+                taskModal.modal("show");
+            });
+
+    
+    });
+
+});
+
+
