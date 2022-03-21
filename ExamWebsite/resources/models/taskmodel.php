@@ -35,10 +35,15 @@
 
                 while ($row = $result->fetch_assoc()) {
                     //Start storing data
+                    $today = new DateTime();
+
                     $taskDueDate = new DateTime($row["DueDate"]);
-                    $taskDueDate = $taskDueDate->format("d/m/Y");
+                    
+                    $taskDueDateStr = $taskDueDate->format("d/m/Y");
                     $taskTeacherId = $row["TeacherID"];
                     $taskId = $row["TaskID"];
+
+                    $taskOverdue = ($today > $taskDueDate);
                     
                     //PLACEHOLDER
                     //Can be improved in the future
@@ -51,7 +56,7 @@
                     $result = $db->query($sql);
                     $task = $result->fetch_assoc();
                     //Finally, Populate tasks array
-                    array_push($tasks,  array("id"=>$taskId, "name"=>$task["TaskSubject"], "description"=>$task["TaskDescription"], "setBy"=>$teacherName, "points"=>$task["TaskPoints"], "dueBy"=>$taskDueDate, "fileIdentifier"=>$task["TaskFileIdentifier"]));
+                    array_push($tasks,  array("id"=>$taskId, "name"=>$task["TaskSubject"], "description"=>$task["TaskDescription"], "setBy"=>$teacherName, "points"=>$task["TaskPoints"], "dueBy"=>$taskDueDateStr, "overdue"=>$taskOverdue, "fileIdentifier"=>$task["TaskFileIdentifier"]));
                 
 
                 }   

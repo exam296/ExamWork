@@ -15,20 +15,24 @@
 		"1": {
 			"type": "textinput",
 			"question": "15+3?",
+			"maxlength": "10",
 			"answer": "18"
 		},
 		"2": {
 			"type": "textinput",
 			"question": "59+25?",
+			"maxlength": "10",
 			"answer": "84"
 		},
 		"3": {
 			"type": "textinput",
 			"question": "43+67?",
+			"maxlength": "10",
 			"answer": "110"
 		},
 		"4": {
 			"type": "openinput",
+			"maxlength": "300",
 			"question": "Describe and explain the process of vector multiplication"
 		}
 	}

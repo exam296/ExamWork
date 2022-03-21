@@ -20,20 +20,12 @@ $(window).on('pageshow', function(){
             window.location.href = targetUrl;
         });
     });
-
-    console.log("A");
-
-
-
-
-
 });
 
 
 //Async stuff
 $(function(){
     $(".item-box").on("click", function(){
-
         
         $("#page-load").fadeIn(100);
         $.ajax(
@@ -49,18 +41,68 @@ $(function(){
                 },
 
                 failure: function(){
-                    $("#page-load").fadeOut(100)
+                    $("#page-load").fadeOut(100);
+                    return;
                 }
             })
             
-              .then(function(){
+            .then(function(){
                 $("#modal-space").html(modalHtml);
-                let taskModal = $("#taskModal");
+                taskModal = $("#taskModal");
                 taskModal.modal("show");
+
+                //Set up event for modal submit
+                $("#taskFinishButton").on("click", function(){
+                    //Validate
+                    //AJAX submit form
+                    let form = taskModal.children().find("form");
+
+                    //Make sure all questions have data
+                    let error = false;
+                    for(let i=0; i<form.serializeArray().length; i++){
+                        let current =$("[name='q_"+i+"']");
+                        if(current.val().length < 1){
+                            error = true;
+                            current.addClass("is-invalid");
+
+                        }
+                        else{
+                            current.removeClass("is-invalid");
+                        }
+                    }
+
+                    if(!error){
+                        //Close and update dashboard
+                        taskModal.modal("hide");
+                        $("#page-load").fadeIn(100);
+                        $.ajax(
+                            {
+                                type: "POST",
+                                url: "ajaxSubmitTask.php",
+                                data: {"taskId": $(this).attr("data-task-id"), "form": JSON.stringify(form.serializeArray())},
+                
+                                success: function(result){ 
+                                    $("#page-load").fadeOut(100);
+                                    console.log(result);
+                                    modalHtml = result;
+                                },
+                
+                                failure: function(){
+                                    $("#page-load").fadeOut(100);
+                                    return;
+                                }
+                            });
+                        }
+
+
+                })
+
             });
 
     
     });
+
+
 
 });
 

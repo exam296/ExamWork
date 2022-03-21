@@ -13,15 +13,15 @@
 <?php $this->startSection('content'); ?>
 
 <div class="d-flex justify-content-center align-items-start flex-wrap">
- <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">
+ <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2 overflow-auto" style="min-width: 25rem">
  <span class="display-6 text-center px-4 py-2">Tasks</span>
  <?php echo $this->yieldContent('task'); ?>
  </div>
- <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">
+ <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2 overflow-auto" style="min-width: 25rem">
  <span class="display-6 text-center px-4 py-2">Feedback</span>
  <?php echo $this->yieldContent('messages'); ?>
  </div>
- <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2" style="min-width: 25rem">
+ <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2 overflow-auto" style="min-width: 25rem">
  <span class="display-6 text-center px-4 py-2">Leaderboard</span>
  <?php echo $this->yieldContent('leaderboard'); ?>
  </div>
