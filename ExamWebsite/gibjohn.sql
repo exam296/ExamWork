@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2022 at 01:22 PM
+-- Generation Time: Mar 18, 2022 at 03:39 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -52,7 +52,8 @@ CREATE TABLE `settasks` (
 --
 
 INSERT INTO `settasks` (`ID`, `TaskID`, `TeachingGroupID`, `TeacherID`, `DueDate`) VALUES
-(1, 1, 1, 5, '2022-04-01');
+(1, 1, 1, 5, '2022-04-01'),
+(2, 5, 2, 6, '2022-04-03');
 
 -- --------------------------------------------------------
 
@@ -74,7 +75,8 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`ID`, `StudentName`, `StudentDateOfBirth`, `StudentEmail`, `StudentPasswordHash`, `DateCreated`) VALUES
-(9, 'Lucas Parnell', '2004-04-17', 'lucas.parnell@gmail.com', '$2y$10$H/c0e0Po1U6X87RCsMWJ/OxcFoWdURWo.INs.o1KzCUVFFu4jTzVi', '2022-03-15');
+(9, 'Lucas Parnell', '2004-04-17', 'lucas.parnell@gmail.com', '$2y$10$H/c0e0Po1U6X87RCsMWJ/OxcFoWdURWo.INs.o1KzCUVFFu4jTzVi', '2022-03-15'),
+(10, 'Phil House', '2002-04-12', 'philb@email.com', '$2y$10$FOVmvfDTKRMHstiqdPIobeqVDjBuRskk2LWSqC2mRk1s73GhQGkQG', '2022-03-16');
 
 -- --------------------------------------------------------
 
@@ -138,7 +140,8 @@ CREATE TABLE `teachers` (
 --
 
 INSERT INTO `teachers` (`ID`, `TeacherName`, `TeacherDateOfBirth`, `TeacherEmail`, `TeacherPasswordHash`, `DateCreated`) VALUES
-(5, 'Bob Jones', '1995-05-11', 'bobj@email.com', '$2y$10$1SES09gWYzfTWA1z03QiMuBxiIDwQSy9qrA.BfX1IEq3VO8csjB0i', '2022-02-21');
+(5, 'Bob Jones', '1995-05-11', 'bobj@email.com', '$2y$10$1SES09gWYzfTWA1z03QiMuBxiIDwQSy9qrA.BfX1IEq3VO8csjB0i', '2022-02-21'),
+(6, 'Bill Grant', '0000-00-00', 'bg32@email.com', '$2y$10$1G8LUkqEaImoxtvfba7LNOzcDV2rOBxYENmcwPQNCfi5h9OIqaRzy', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -156,7 +159,8 @@ CREATE TABLE `teachersteachinggroups` (
 --
 
 INSERT INTO `teachersteachinggroups` (`TeacherID`, `TeachingGroupID`) VALUES
-(5, 1);
+(5, 1),
+(6, 2);
 
 -- --------------------------------------------------------
 
@@ -175,7 +179,8 @@ CREATE TABLE `teachinggroups` (
 --
 
 INSERT INTO `teachinggroups` (`ID`, `GroupName`, `DateCreated`) VALUES
-(1, 'A School', '2022-03-16');
+(1, 'ASchoolG1', '2022-03-16'),
+(2, 'ASchoolG2', '2022-03-16');
 
 -- --------------------------------------------------------
 
@@ -193,7 +198,8 @@ CREATE TABLE `teachinggroupstudents` (
 --
 
 INSERT INTO `teachinggroupstudents` (`TeachingGroupID`, `StudentID`) VALUES
-(1, 9);
+(1, 9),
+(2, 9);
 
 --
 -- Indexes for dumped tables
@@ -278,13 +284,13 @@ ALTER TABLE `leaderboard`
 -- AUTO_INCREMENT for table `settasks`
 --
 ALTER TABLE `settasks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `taskfeedback`
@@ -302,13 +308,13 @@ ALTER TABLE `tasks`
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `teachinggroups`
 --
 ALTER TABLE `teachinggroups`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
