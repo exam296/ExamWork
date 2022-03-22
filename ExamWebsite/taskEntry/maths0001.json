@@ -16,19 +16,22 @@
 			"type": "textinput",
 			"question": "15+3?",
 			"maxlength": "10",
-			"answer": "18"
+			"answer": "18",
+			"marks": "2"
 		},
 		"2": {
 			"type": "textinput",
 			"question": "59+25?",
 			"maxlength": "10",
-			"answer": "84"
+			"answer": "84",
+			"marks": "2"
 		},
 		"3": {
 			"type": "textinput",
 			"question": "43+67?",
 			"maxlength": "10",
-			"answer": "110"
+			"answer": "110",
+			"marks": "2"
 		},
 		"4": {
 			"type": "openinput",

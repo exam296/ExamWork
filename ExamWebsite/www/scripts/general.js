@@ -36,7 +36,6 @@ $(function(){
 
                 success: function(result){ 
                     $("#page-load").fadeOut(100);
-                    console.log(result);
                     modalHtml = result;
                 },
 
@@ -52,7 +51,7 @@ $(function(){
                 taskModal.modal("show");
 
                 //Set up event for modal submit
-                $("#taskFinishButton").on("click", function(){
+                $("#taskFinishButton").off("click").on("click", function(){
                     //Validate
                     //AJAX submit form
                     let form = taskModal.children().find("form");
@@ -83,8 +82,7 @@ $(function(){
                 
                                 success: function(result){ 
                                     $("#page-load").fadeOut(100);
-                                    console.log(result);
-                                    modalHtml = result;
+                                    console.log("Server Returned: \n" + result);
                                 },
                 
                                 failure: function(){
