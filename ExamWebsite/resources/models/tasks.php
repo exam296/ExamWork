@@ -1,6 +1,8 @@
 <?php
     class Tasks {
 
+        //Write about views on OOP
+
         function getStudentTasks($user){
             $sql = "";
 
@@ -74,6 +76,17 @@
             return $tasks;
         }
 
+
+        //Write about duplicate tasks in SetTasks table
+        function getSetTaskId($task){
+            $sql = <<<SQL
+            SELECT `ID` FROM `SetTasks` WHERE `TaskID` = {$task["id"]};
+            SQL;
+
+            $db = $this->connectDatabase();
+
+            $result = $db->query($sql);
+        }
         
     //---------------------------------
 

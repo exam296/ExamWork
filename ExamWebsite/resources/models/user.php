@@ -8,7 +8,7 @@ class User {
         $this->email = "";
         $this->passwordHash = "";
         $this->isTeacher = false;
-        $this->userId = 0;
+        $this->id = 0;
     }
 
     function setFullName($fullName){
@@ -70,7 +70,7 @@ class User {
             
             $db->query($sql);
 
-            $userId = $this->getUserId();
+            $id = $this->getUserId();
 
             //Clear hash as this is serialised.
             $this->passwordHash = "";
@@ -168,7 +168,7 @@ class User {
                 $this->setFullName($row["TeacherName"]);
                 $this->setDateOfBirth($row["TeacherDateOfBirth"]);
                 $this->setTeacher(true);
-                $this->userId = $this->getUserId();
+                $this->id = $this->getUserId();
                 return "loggedIn";
 
             }else{
@@ -219,7 +219,7 @@ class User {
         $db = $this->connectDatabase();
         $email = $this->email;
 
-        $userId = 0;
+        $id = 0;
         $sql = "";
         $userType = $this->getUserType($db);
 
@@ -237,8 +237,8 @@ class User {
         }
 
         $result = $db->query($sql);
-        $userId = $result->fetch_assoc()["ID"];
-        return $userId;
+        $id = $result->fetch_assoc()["ID"];
+        return $id;
 
     }
 

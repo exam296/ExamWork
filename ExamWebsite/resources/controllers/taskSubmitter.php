@@ -1,5 +1,6 @@
 <?php
-    include_once "../models/userresult.php";
+    include_once "../resources/models/result.php";
+    include_once "../libraries/utilities.php";
     //Takes POST data
     //Validates
     //Compare answers to JSON
@@ -8,13 +9,13 @@
     class TaskSubmitter {
 
 
-    function __construct($formPostData, $taskReader){
+    function __construct($formPostData, $taskReader, $user){
         $this->formData = $formPostData;
         $this->formData = json_decode($this->formData, true);
         $this->taskReader = $taskReader;
+        $this->user = $user;
 
-
-        $this->userResults = [];
+        $this->finalResults = [];
     }
 
 
@@ -65,17 +66,49 @@
                 $fileAnswer = $fileQuestions[$i]["answer"];
                 $fileMarks = $fileQuestions[$i]["marks"];
                 $userAnswer = $userAnswers[$userAnswerable[$i]];
+                $userMarks = 0;
                 //Simple usage of ternary operator to build string
-                $answerCorrect = ($fileAnswer===$userAnswer)
-                $answerCorrectStr = $result ? "correct" : "incorrect";
+                $answerCorrect = ($fileAnswer===$userAnswer);
+                $answerCorrectStr = $answerCorrect ? "correct" : "incorrect";
 
-                print($fileAnswer . " = " . $userAnswer . " : " . $answerCorrectStr . "\n");
+                print($fileAnswer . " = " . $userAnswer . " : " . $answerCorrectStr . "<br>");
+
+                if($answerCorrect){
+                    $userMarks = $fileMarks;
+                }
                 
                 $result = new UserResult();
                 $result->questionNo = $userAnswerable[$i];
                 $result->marksEarned = $fileMarks;
+                $result->totalMarks = $fileMarks;
+                $result->answer = $userAnswer;
+
+                array_push($this->finalResults, $result);
+
                 
             }
+
+            return $this->finalResults;
+    }
+
+    function submit($setTaskId){
+        //To submit
+        //Need to update:
+        //CompleteTasks
+        //TaskAnswers 
+
+        //CompleteTasks ---
+        $totalMarks = 0;
+        $marksAchieved = 0;
+        
+        for($i=0; $i<count($this->finalResults); $i++){
+            $result = $this->finalResults[$i];
+            $marksAchieved += $result->marksEarned;
+            $totalMarks += $result->totalMarks;
+
+        }
+
+        //$completedTask = new CompletedTask($setTaskId, $user->id, $marksAchieved, $totalMarks, Utils::today_dbformatted());
     }
 
     //Taken from login

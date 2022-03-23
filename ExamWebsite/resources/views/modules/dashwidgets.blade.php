@@ -46,3 +46,20 @@
 </div>
 
 @endsection
+
+
+
+@section('statustoast')
+<div class="position-fixed bottom-0 end-0 p-3 text-dark" style="z-index: 11">
+  <div id="status-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">Status</strong>
+      <small>Now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div id="status-toast-content" class="toast-body">
+      Content
+    </div>
+  </div>
+</div>
+@endsection

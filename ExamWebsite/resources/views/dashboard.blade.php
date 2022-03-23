@@ -36,6 +36,9 @@
         <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status"></div>
     </div>
   </div>
+
+<!--Status toast--> 
+@yield("statustoast")
   
 @endsection
 

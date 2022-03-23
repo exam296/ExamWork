@@ -83,6 +83,9 @@ $(function(){
                                 success: function(result){ 
                                     $("#page-load").fadeOut(100);
                                     console.log("Server Returned: \n" + result);
+                                    let toast = $("#status-toast");
+                                    $("#status-toast-content").html(result);
+                                    toast.toast("show");
                                 },
                 
                                 failure: function(){

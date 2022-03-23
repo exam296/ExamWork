@@ -22,9 +22,9 @@
                 @foreach($questions as $question)
                   <span>Question <span class="text-primary">{{$loop->index+1}}</span></span> 
                   @if($question["type"]=="textinput")
-                    <input name="q_{{$loop->index}}" type="text" class="form-control my-2 w-100" placeholder="{{$question["question"]}}"  maxlength="{{$question["maxlength"]}}" required/>
+                    <input name="q_{{$loop->index}}" type="text" class="form-control my-2 w-100" placeholder="{{$question["question"]}}"  maxlength="{{$question["maxlength"]}}" value="18" required/>
                   @elseif($question["type"]=="openinput")
-                    <textarea name="q_{{$loop->index}}" class="form-control" placeholder="{{$question["question"]}}" rows="5" maxlength="{{$question["maxlength"]}}" required></textarea>
+                    <textarea name="q_{{$loop->index}}" class="form-control" placeholder="{{$question["question"]}}" rows="5" maxlength="{{$question["maxlength"]}}" required>s</textarea>
                   @elseif($question["type"]=="text")
                     <p>{{$question["question"]}}</p>
                   @endif

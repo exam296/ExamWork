@@ -6,8 +6,8 @@
     include_once "../resources/controllers/taskReader.php";
 
     $user = unserialize($_SESSION["User"]); 
-    $tasks = new Tasks();
-    $tasks = $tasks->getStudentTasks($user);
+    $i_tasks = new Tasks();
+    $tasks = $i_tasks->getStudentTasks($user);
 
     $taskId = $_POST["taskId"];
 
@@ -22,6 +22,7 @@
     }
 
     $_SESSION["openTask"] = $task;
+    $_SESSION["openSetTask"] = $i_tasks->getSetTaskId($task);
 
     $taskReader = new TaskReader($task);
 
