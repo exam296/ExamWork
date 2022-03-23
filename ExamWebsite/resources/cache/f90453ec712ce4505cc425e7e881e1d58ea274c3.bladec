@@ -38,8 +38,11 @@
  </div>
 
 <!--Status toast--> 
-<?php echo $this->yieldContent("statustoast"); ?>
- 
+
+<?php if($debug): ?>
+ <?php echo $this->yieldContent("statustoast"); ?>
+<?php endif; ?>
+
 <?php $this->stopSection(); ?>
 
 

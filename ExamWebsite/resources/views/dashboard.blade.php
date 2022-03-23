@@ -38,8 +38,11 @@
   </div>
 
 <!--Status toast--> 
-@yield("statustoast")
-  
+
+@if($debug)
+  @yield("statustoast")
+@endif
+
 @endsection
 
 

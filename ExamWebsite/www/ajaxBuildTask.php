@@ -23,7 +23,6 @@
 
     $_SESSION["openTask"] = $task;
     $_SESSION["openSetTask"] = $i_tasks->getSetTaskId($task);
-
     $taskReader = new TaskReader($task);
 
     $taskReader->readTaskFile();

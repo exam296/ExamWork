@@ -1,6 +1,9 @@
 <?php
     include_once "../resources/models/result.php";
+    include_once "../resources/models/completedtask.php";
+    include_once "../resources/models/taskanswer.php";
     include_once "../libraries/utilities.php";
+
     //Takes POST data
     //Validates
     //Compare answers to JSON
@@ -108,10 +111,26 @@
 
         }
 
-        //$completedTask = new CompletedTask($setTaskId, $user->id, $marksAchieved, $totalMarks, Utils::today_dbformatted());
+        $completedTask = new CompletedTask();
+
+        $completedTask->setSetTaskId($setTaskId);
+        $completedTask->setUserId($this->user->getUserId());
+        $completedTask->setMarksAchieved($marksAchieved);
+        $completedTask->setTotalMarks($totalMarks);
+        $completedTask->setDateCompleted(Utils::today_dbformatted());
+
+        $completedTask->submit();
+
+        //TaskAnswers ---
+        
+        for($i=0; $i<count($this->finalResults); $i++){
+            $result = $this->finalResults[$i];
+            $taskAnswer = new TaskAnswer(); 
+            //$taskAnswer->setCompletedTaskId($completedTask->getId());   
+        }
     }
 
-    //Taken from login
+    //Taken from login script
     function validateInput($input){
         $input = trim($input);
         $input = stripslashes($input);

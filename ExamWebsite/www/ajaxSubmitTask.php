@@ -9,21 +9,27 @@
 
     if(array_key_exists("form", $_POST) && array_key_exists("openTask", $_SESSION))
     {
+        
         $form = $_POST["form"];
 
         $user = unserialize($_SESSION["User"]);
         $task = $_SESSION["openTask"];
         $setTask = $_SESSION["openSetTask"];
 
-        $taskReader = new TaskReader($task);
+        //Make sure task isnt completed already
+        if(!CompletedTask::checkCompleted($setTaskId, $user->getUserId())){
 
-        $taskSubmitter = new TaskSubmitter($form, $taskReader, $user);
+            $taskReader = new TaskReader($task);
 
-        $results = $taskSubmitter->checkAnswers();
-        //Submit to database
-        $uploadStatus = $taskSubmitter->submit($setTask);
+            $taskSubmitter = new TaskSubmitter($form, $taskReader, $user);
 
-        var_dump($results); 
+            $results = $taskSubmitter->checkAnswers();
+            //Submit to database
+            $uploadStatus = $taskSubmitter->submit($setTask);
+        
+        }
+
+        //var_dump($results); 
 
         unset($_SESSION["openTask"]);
         unset($_SESSION["openSetTask"]);

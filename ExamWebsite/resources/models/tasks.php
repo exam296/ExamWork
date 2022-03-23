@@ -1,4 +1,6 @@
 <?php
+    include_once "../libraries/utilities.php";
+    include_once "../resources/models/completedtask.php";
     class Tasks {
 
         //Write about views on OOP
@@ -13,7 +15,7 @@
             SELECT `TeachingGroupID` FROM `TeachingGroupStudents` WHERE `StudentID` = $userId;
             SQL;
 
-            $db = $this->connectDatabase();
+            $db = Utils::connectDatabase();
 
             $result = $db->query($sql);
 
@@ -43,23 +45,27 @@
                     
                     $taskDueDateStr = $taskDueDate->format("d/m/Y");
                     $taskTeacherId = $row["TeacherID"];
+                    $setTaskId = $row["ID"];
                     $taskId = $row["TaskID"];
 
-                    $taskOverdue = ($today > $taskDueDate);
-                    
-                    //PLACEHOLDER
-                    //Can be improved in the future
-                    $teacherName = $db->query("SELECT `TeacherName` FROM `Teachers` WHERE `ID` = $taskTeacherId")->fetch_all()[0][0];
+                    //Before going further, check if the task is completed using the ID
+                    if(!CompletedTask::checkCompleted($setTaskId, $user->getUserId())){
 
-                    //Get Task Data
-                    $sql = <<<SQL
-                    SELECT * FROM `Tasks` WHERE `ID` = $taskId;
-                    SQL;
-                    $result = $db->query($sql);
-                    $task = $result->fetch_assoc();
-                    //Finally, Populate tasks array
-                    array_push($tasks,  array("id"=>$taskId, "name"=>$task["TaskSubject"], "description"=>$task["TaskDescription"], "setBy"=>$teacherName, "points"=>$task["TaskPoints"], "dueBy"=>$taskDueDateStr, "overdue"=>$taskOverdue, "fileIdentifier"=>$task["TaskFileIdentifier"]));
-                
+                        $taskOverdue = ($today > $taskDueDate);
+                        
+                        //PLACEHOLDER
+                        //Can be improved in the future
+                        $teacherName = $db->query("SELECT `TeacherName` FROM `Teachers` WHERE `ID` = $taskTeacherId")->fetch_all()[0][0];
+
+                        //Get Task Data
+                        $sql = <<<SQL
+                        SELECT * FROM `Tasks` WHERE `ID` = $taskId;
+                        SQL;
+                        $result = $db->query($sql);
+                        $task = $result->fetch_assoc();
+                        //Finally, Populate tasks array
+                        array_push($tasks,  array("id"=>$taskId, "name"=>$task["TaskSubject"], "description"=>$task["TaskDescription"], "setBy"=>$teacherName, "points"=>$task["TaskPoints"], "dueBy"=>$taskDueDateStr, "overdue"=>$taskOverdue, "fileIdentifier"=>$task["TaskFileIdentifier"]));
+                    }
 
                 }   
 
@@ -83,22 +89,23 @@
             SELECT `ID` FROM `SetTasks` WHERE `TaskID` = {$task["id"]};
             SQL;
 
-            $db = $this->connectDatabase();
+
+            $db = Utils::connectDatabase();
 
             $result = $db->query($sql);
+            $result = $result->fetch_all();
+
+            if(count($result)<2){
+                $result = intval($result);
+            }
+
+            return $result;
         }
         
     //---------------------------------
 
 
 
-    function connectDatabase(){
-        $db = new mysqli("localhost", "GibJohn", "Z4yrJvyG)qaqsFFH", "gibjohn");
-        if($db->connect_errno){
-            echo "Database Failed";
-        }
-        return $db;
-    }
 
     }
 ?>

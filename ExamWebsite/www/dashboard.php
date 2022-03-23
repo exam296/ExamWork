@@ -8,7 +8,7 @@
 
         $user = unserialize($_SESSION["User"]);
         $task = new Tasks();
-        echo $blade->run("dashboard", array("page"=>"dashboard", "user"=>$user, "tasks"=>$task->getStudentTasks($user)));
+        echo $blade->run("dashboard", array("page"=>"dashboard", "user"=>$user, "tasks"=>$task->getStudentTasks($user), "debug"=>$SITE_DEBUG_ENABLED));
 
     }
     else{

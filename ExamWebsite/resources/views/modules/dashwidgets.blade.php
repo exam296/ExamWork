@@ -17,6 +17,28 @@
 
 </div>
 
+<div class="modal fade text-dark" id="taskInfoModal" tabindex="-1" aria-hidden="true" data-task-id="{{$task["id"]}}">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="taskInfoTitle">Would you like to start this task?</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex flex-column">
+        <h3 class="display-6">{{$task["name"]}}</h3>
+        <span class="text-secondary fw-bold">Description: <span class="fw-light">{{$task["description"]}}</span></span>
+        <span class="text-secondary fw-bold">Due date: <span class="fw-light">{{$task["dueBy"]}}</span></span>
+        <span class="text-secondary fw-bold"><span class="fw-light text-primary">{{$task["points"]}}</span> Points</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="taskInfoStartTaskButton">Start Task</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 @endforeach
 
 @if(!count($tasks))
