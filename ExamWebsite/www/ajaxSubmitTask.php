@@ -17,7 +17,7 @@
         $setTask = $_SESSION["openSetTask"];
 
         //Make sure task isnt completed already
-        if(!CompletedTask::checkCompleted($setTaskId, $user->getUserId())){
+        if(!CompletedTask::checkCompleted($setTask, $user->getUserId())){
 
             $taskReader = new TaskReader($task);
 
@@ -26,8 +26,11 @@
             $results = $taskSubmitter->checkAnswers();
             //Submit to database
             $uploadStatus = $taskSubmitter->submit($setTask);
+
+            return $uploadStatus;
         
         }
+        return -1;
 
         //var_dump($results); 
 
@@ -35,4 +38,6 @@
         unset($_SESSION["openSetTask"]);
 
     }
+
+    
 ?>

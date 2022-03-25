@@ -17,20 +17,35 @@
         $this->formData = json_decode($this->formData, true);
         $this->taskReader = $taskReader;
         $this->user = $user;
+        $this->userAnswers = [];
+        $this->userAnswerable = [];
+        $this->fileQuestions = [];
 
         $this->finalResults = [];
+    }
+
+
+    private function checkAnswerable($id){
+        if(isset($this->fileQuestions[$id]) 
+        && array_key_exists("answer", $this->fileQuestions[$id])){
+            //This is answerable
+            array_push($this->userAnswerable, $id);
+            return count($this->userAnswerable)-1; //return the ID
+        }
+        //If not return -1;
+        return -1;
     }
 
 
     function checkAnswers(){
        $this->taskReader->readTaskFile();
 
-        $fileQuestions = $this->taskReader->getQuestions();
+        $this->fileQuestions = $this->taskReader->getQuestions();
 
 
         $setAnswers = [];
-        $userAnswers = [];
-        $userAnswerable = [];
+
+        $this->userAnswerable = [];
 
 
         //Increment through each user answer
@@ -42,7 +57,7 @@
             $currentFormId = $this->validateInput($this->formData[$i]["name"]);
             $currentFormValue = $this->validateInput($this->formData[$i]["value"]);
             
-            array_push($userAnswers, $currentFormValue);
+            array_push($this->userAnswers, $currentFormValue);
             
 
 
@@ -54,34 +69,28 @@
                 $id = intval($id);
                 //We now have integer id from post.
                 //Check the corresponding question in the JSON file
-                if(isset($fileQuestions[$id]) 
-                    && array_key_exists("answer", $fileQuestions[$id])){
-                        //This is answerable
-                        array_push($userAnswerable, $id);
-                    }
+                $this->checkAnswerable($id);
             }
         }
 
 
             //Now we have array of user answers
             //Compare answers against JSON ids
-            for($i=0; $i<count($userAnswerable); $i++){
-                $fileAnswer = $fileQuestions[$i]["answer"];
-                $fileMarks = $fileQuestions[$i]["marks"];
-                $userAnswer = $userAnswers[$userAnswerable[$i]];
+            for($i=0; $i<count($this->userAnswerable); $i++){
+                $fileAnswer = $this->fileQuestions[$i]["answer"];
+                $fileMarks = $this->fileQuestions[$i]["marks"];
+                $userAnswer = $this->userAnswers[$this->userAnswerable[$i]];
                 $userMarks = 0;
                 //Simple usage of ternary operator to build string
                 $answerCorrect = ($fileAnswer===$userAnswer);
                 $answerCorrectStr = $answerCorrect ? "correct" : "incorrect";
-
-                print($fileAnswer . " = " . $userAnswer . " : " . $answerCorrectStr . "<br>");
 
                 if($answerCorrect){
                     $userMarks = $fileMarks;
                 }
                 
                 $result = new UserResult();
-                $result->questionNo = $userAnswerable[$i];
+                $result->questionNo = $this->userAnswerable[$i];
                 $result->marksEarned = $fileMarks;
                 $result->totalMarks = $fileMarks;
                 $result->answer = $userAnswer;
@@ -123,11 +132,23 @@
 
         //TaskAnswers ---
         
-        for($i=0; $i<count($this->finalResults); $i++){
-            $result = $this->finalResults[$i];
+        for($i=0; $i<count($this->userAnswers); $i++){
+            $result = $this->userAnswers[$i];
             $taskAnswer = new TaskAnswer(); 
-            //$taskAnswer->setCompletedTaskId($completedTask->getId());   
+            $taskAnswer->setCompletedTaskId($completedTask->getId());   
+            $taskAnswer->setQuestionNo($i);
+            $taskAnswer->setAnswer($result);
+            $answerable = $this->checkAnswerable($i);
+            $marksAchieved = 0;
+
+            if($answerable != -1)
+                $marksAchieved = $this->finalResults[$this->userAnswerable[$answerable]]->marksEarned;
+
+            $taskAnswer->setMarksAchieved($marksAchieved);
+            $taskAnswer->submit();
+            
         }
+        return 0;
     }
 
     //Taken from login script

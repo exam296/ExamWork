@@ -7,8 +7,9 @@
     if(array_key_exists("User", $_SESSION)){
 
         $user = unserialize($_SESSION["User"]);
-        $task = new Tasks();
-        echo $blade->run("dashboard", array("page"=>"dashboard", "user"=>$user, "tasks"=>$task->getStudentTasks($user), "debug"=>$SITE_DEBUG_ENABLED));
+        $tasks = new Tasks();
+        $feedback = new Feedback();
+        echo $blade->run("dashboard", array("page"=>"dashboard", "user"=>$user, "tasks"=>$tasks->getStudentTasks($user, false), "feedback"=>$feedback->getStudentFeedback($user),"debug"=>$SITE_DEBUG_ENABLED));
 
     }
     else{

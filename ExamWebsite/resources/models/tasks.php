@@ -5,7 +5,7 @@
 
         //Write about views on OOP
 
-        function getStudentTasks($user){
+        function getStudentTasks($user, $getAll){
             $sql = "";
 
             $userId = $user->getUserId();
@@ -49,7 +49,7 @@
                     $taskId = $row["TaskID"];
 
                     //Before going further, check if the task is completed using the ID
-                    if(!CompletedTask::checkCompleted($setTaskId, $user->getUserId())){
+                    if(!CompletedTask::checkCompleted($setTaskId, $user->getUserId()) || $getAll){
 
                         $taskOverdue = ($today > $taskDueDate);
                         

@@ -38,11 +38,31 @@
 
             //CompletedTask ---
             $sql = <<<SQL
-                INSERT INTO `completedtasks`(`ID`, `SetTaskID`, `StudentID`, `MarksAchieved`, `MarksTotal`, `DateCompleted`) VALUES (NULL, $this->setTaskId, $this->userId, $this->marksAchieved, $this->totalMarks, '$this->dateCompleted');
+                INSERT INTO `CompletedTasks`(`ID`, `SetTaskID`, `StudentID`, `MarksAchieved`, `MarksTotal`, `DateCompleted`) VALUES (NULL, $this->setTaskId, $this->userId, $this->marksAchieved, $this->totalMarks, '$this->dateCompleted');
                 SQL;
 
-            var_dump($db->query($sql));
+            $db->query($sql);
 
+        }
+
+
+        function getId(){
+            $sql = <<<SQL
+            SELECT `ID` FROM `CompletedTasks` WHERE `SetTaskID` = {$this->setTaskId} AND `StudentID` = {$this->userId};
+            SQL;
+
+
+            $db = Utils::connectDatabase();
+
+            $result = $db->query($sql);
+
+            
+
+            $result = $result->fetch_all()[0][0];
+
+            $result = intval($result);
+
+            return $result;
         }
 
 

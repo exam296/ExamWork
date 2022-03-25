@@ -6,6 +6,7 @@ class TaskAnswer {
         $this->completedTaskId = 0;
         $this->questionNo = 0;
         $this->answer = "";
+        $this->marksAchieved = 0;
     }
 
     function setCompletedTaskId($completedTaskId){
@@ -13,11 +14,16 @@ class TaskAnswer {
     }
 
     function setQuestionNo($questionNo){
-        $this->questionNo = $completedTaskId;
+        $this->questionNo = $questionNo;
     }
 
     function setAnswer($answer){
         $this->answer = $answer;
+    }
+
+    
+    function setMarksAchieved($marksAchieved){
+        $this->marksAchieved = $marksAchieved;
     }
 
     function submit(){
@@ -26,7 +32,7 @@ class TaskAnswer {
 
         //TaskAnswer ---
         $sql = <<<SQL
-            INSERT INTO `CompletedTasks` VALUES (NULL, $this->userId, $this->marksAchieved, $this->totalMarks, $this->dateCompleted);
+            INSERT INTO `TaskAnswers` VALUES (NULL, $this->completedTaskId, $this->questionNo, '$this->answer', $this->marksAchieved);
             SQL;
 
         $db->query($sql);
