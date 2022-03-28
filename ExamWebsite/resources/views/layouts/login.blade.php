@@ -17,6 +17,15 @@
                 height: 100vh;
                 background-attachment: fixed;
             }
+            .login-box {
+                background: linear-gradient(
+                    rgba(152,14,210,0.1), 
+                    rgba(152,14,210,0.1)
+                );
+
+                backdrop-filter: blur(8px);
+
+            }
 
         </style>
     </head>
