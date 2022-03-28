@@ -11,9 +11,12 @@
  <div class="dropdown-menu slideIn">
  <div class="d-flex flex-column align-items-center">
  <span class="lead"><?php if($user->isTeacher): ?>Teacher <?php else: ?> Student <?php endif; ?></span>
- <span>Level <span class="text-primary">5</span></span>
- <span><span class="text-primary">3</span> Tasks due</span>
+ <?php if(!$user->isTeacher): ?>
+ <span class="text-primary"><?php echo \htmlentities($leaderboard->getPoints(), ENT_QUOTES, 'UTF-8', false); ?> <span class="text-dark">points</span></span>
+ <span><span class="text-primary"><?php echo \htmlentities(count($tasks), ENT_QUOTES, 'UTF-8', false); ?></span> Tasks due</span>
+ <?php endif; ?>
  <button class="btn btn-secondary btn-sm my-1" data-redir-loc="logout.php">Logout</button>
+
  <span>
  </div>
  </div>
@@ -50,7 +53,13 @@
  <title>GibJohn Tutoring - <?php echo $this->yieldContent('title'); ?></title>
 
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <script src="scripts/general.js"></script>
+
+ <?php if($user->isTeacher): ?>
+ <script src="scripts/general_teacher.js"></script>
+ <?php else: ?>
+ <script src="scripts/general_student.js"></script>
+ <?php endif; ?>
+
  
 
  <!--Some scripts are in the head so that page transitions are smooth-->
@@ -115,9 +124,9 @@
  <li class="nav-item">
  <a class="nav-link px-3 lead <?php if($page=="dashboard"): ?> active <?php endif; ?>" data-redir-loc="/">Dashboard</a>
  </li>
- <li class="nav-item">
+ <!--<li class="nav-item">
  <a class="nav-link px-3 lead <?php if($page=="tasks"): ?> active <?php endif; ?>"  data-redir-loc="tasks.php">Tasks</a>
- </li>
+ </li>-->
  </ul>
  <div class="d-inline-flex flex-column">
 

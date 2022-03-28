@@ -1,5 +1,7 @@
 <?php
 
+include_once "../libraries/utilities.php";
+
 class User {
 
     function __construct(){
@@ -180,10 +182,10 @@ class User {
 
 
 
-    function getUserType($db){
+    function getUserType(){
         //Check if the user is a student or teacher
         //or if the user doesnt exist at all
-
+        $db = Utils::connectDatabase();
         $userType = "none";
 
         $studentSql = <<<SQL

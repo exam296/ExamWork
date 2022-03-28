@@ -3,14 +3,32 @@
     include_once "../libraries/boilerplate.php";
     include_once "../resources/models/user.php";
     include_once "../resources/models/tasks.php";
-
+    include_once "../resources/models/feedback.php";
+    include_once "../resources/models/leaderboard.php";
+    include_once "../resources/models/teachinggroups.php";
+    
     if(array_key_exists("User", $_SESSION)){
 
         $user = unserialize($_SESSION["User"]);
-        $tasks = new Tasks();
-        $feedback = new Feedback();
-        echo $blade->run("dashboard", array("page"=>"dashboard", "user"=>$user, "tasks"=>$tasks->getStudentTasks($user, false), "feedback"=>$feedback->getStudentFeedback($user),"debug"=>$SITE_DEBUG_ENABLED));
 
+        if($user->getUserType()=="student"){
+            $tasks = new Tasks();
+            $feedback = new Feedback($tasks);
+            $leaderboard = new Leaderboard($user);
+            echo $blade->run("studentdashboard", array("page"=>"dashboard",
+                                                "user"=>$user,
+                                                "tasks"=>$tasks->getStudentTasks($user, false),
+                                                "feedback"=>$feedback->getFeedbackTasks($user),
+                                                "leaderboard"=>$leaderboard,
+                                                "debug"=>$SITE_DEBUG_ENABLED));
+        }
+        else{
+            //Teacher
+            $teachingGroups = new TeachingGroups($user);
+            echo $blade->run("teacherdashboard",  array("user"=>$user,
+                                                        "debug"=>$SITE_DEBUG_ENABLED,
+                                                        "teachingGroups"=>$teachingGroups));
+        }
     }
     else{
         header("Location: index.php");

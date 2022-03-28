@@ -14,8 +14,7 @@
 
         $user = unserialize($_SESSION["User"]);
         $task = $_SESSION["openTask"];
-        $setTask = $_SESSION["openSetTask"];
-
+        $setTask = $task["setTaskId"];
         //Make sure task isnt completed already
         if(!CompletedTask::checkCompleted($setTask, $user->getUserId())){
 
@@ -27,7 +26,7 @@
             //Submit to database
             $uploadStatus = $taskSubmitter->submit($setTask);
 
-            return $uploadStatus;
+            echo $uploadStatus;
         
         }
         return -1;
@@ -35,7 +34,6 @@
         //var_dump($results); 
 
         unset($_SESSION["openTask"]);
-        unset($_SESSION["openSetTask"]);
 
     }
 

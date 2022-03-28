@@ -63,8 +63,8 @@
                         SQL;
                         $result = $db->query($sql);
                         $task = $result->fetch_assoc();
-                        //Finally, Populate tasks array
-                        array_push($tasks,  array("id"=>$taskId, "name"=>$task["TaskSubject"], "description"=>$task["TaskDescription"], "setBy"=>$teacherName, "points"=>$task["TaskPoints"], "dueBy"=>$taskDueDateStr, "overdue"=>$taskOverdue, "fileIdentifier"=>$task["TaskFileIdentifier"]));
+                        //Finally, Populate tasks array (Make object)
+                        array_push($tasks, array("id"=>$taskId, "setTaskId"=>$setTaskId, "name"=>$task["TaskSubject"], "description"=>$task["TaskDescription"], "setBy"=>$teacherName, "points"=>$task["TaskPoints"], "dueBy"=>$taskDueDateStr, "overdue"=>$taskOverdue, "fileIdentifier"=>$task["TaskFileIdentifier"]));
                     }
 
                 }   
@@ -76,7 +76,9 @@
             //Sort tasks by points
             $points = array_column($tasks, 'points');
             array_multisort($points, SORT_DESC, $tasks);
-
+            //Sort tasks by date due
+            $due = array_column($tasks, 'dueBy');
+            array_multisort($due, SORT_ASC, $tasks);
             
 
             return $tasks;

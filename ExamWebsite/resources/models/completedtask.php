@@ -41,6 +41,7 @@
                 INSERT INTO `CompletedTasks`(`ID`, `SetTaskID`, `StudentID`, `MarksAchieved`, `MarksTotal`, `DateCompleted`) VALUES (NULL, $this->setTaskId, $this->userId, $this->marksAchieved, $this->totalMarks, '$this->dateCompleted');
                 SQL;
 
+
             $db->query($sql);
 
         }

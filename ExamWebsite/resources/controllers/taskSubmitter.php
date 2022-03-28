@@ -2,6 +2,7 @@
     include_once "../resources/models/result.php";
     include_once "../resources/models/completedtask.php";
     include_once "../resources/models/taskanswer.php";
+    include_once "../resources/models/leaderboard.php";
     include_once "../libraries/utilities.php";
 
     //Takes POST data
@@ -103,6 +104,21 @@
             return $this->finalResults;
     }
 
+    function calculatePoints(){
+        //Points = ceil(allMarksEarned * 1.875)
+
+        $allMarksEarned = 0;
+
+        for($i = 0; $i<count($this->finalResults); $i++){
+            $result = $this->finalResults[$i];
+            $allMarksEarned += $result->marksEarned;
+        }
+
+        $points = ceil($allMarksEarned * 1.875);
+        return $points;
+
+    }
+
     function submit($setTaskId){
         //To submit
         //Need to update:
@@ -148,7 +164,13 @@
             $taskAnswer->submit();
             
         }
-        return 0;
+
+        //Leaderboard
+        $leaderboard = new Leaderboard($this->user);
+        $points = $this->calculatePoints();
+        $leaderboard->addPoints($points);
+
+        return "done";
     }
 
     //Taken from login script
