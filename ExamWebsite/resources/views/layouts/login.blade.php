@@ -5,7 +5,7 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300&display=swap" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="scripts/general.js"></script>
+        <script src="scripts/general_student.js"></script>
         <script src="scripts/login.js"></script>
         <!--Scripts are in the head so that page transitions are smooth-->
         <style>
