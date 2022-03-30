@@ -7,8 +7,11 @@
         }
 
         function getGroups(){
+            //Connect database
             $db = Utils::connectDatabase();
             $teachingGroups = [];
+
+            //Get the teaching groups that this teacher is part of
             $sql = <<<SQL
                 SELECT * FROM `TeachersTeachingGroups` WHERE `TeacherID` = {$this->user->getUserId()};
                 SQL;
@@ -16,17 +19,49 @@
 
 
             while($row = $result->fetch_assoc()){
+                //Return each teaching group
                 $sqlTeachingGroup = <<<SQL
                     SELECT * FROM `TeachingGroups` WHERE `ID` = {$row["TeachingGroupID"]};
                 SQL;
                 
-                $result = $db->query($sqlTeachingGroup);
-                $teachingGroup = $result->fetch_assoc();
+                $groupResult = $db->query($sqlTeachingGroup);
+                $teachingGroup = $groupResult->fetch_assoc();
 
                 array_push($teachingGroups, $teachingGroup);
             }
 
             return $teachingGroups;
+        }
+
+        function newTeachingGroup($teachingGroupName){
+            $db = Utils::connectDatabase();
+            $today = Utils::today_dbformatted();
+            $sql = <<<SQL
+                INSERT INTO `TeachingGroups` VALUES (NULL, '$teachingGroupName','$today')
+                SQL;
+            //Create teaching group
+            $db->query($sql);
+
+            //$db->insert_id is a thing?
+
+
+            //Assign teacher to teaching group
+            $sql = <<<SQL
+                INSERT INTO `TeachersTeachingGroups` VALUES ('{$this->user->getUserId()}', '{$db->insert_id}')
+            SQL;
+
+            $db->query($sql);
+        }
+
+
+        function removeTeachingGroup($teachingGroupId){
+            $db = Utils::connectDatabase();
+            $today = Utils::today_dbformatted();
+            $sql = <<<SQL
+                DROP FROM `TeachingGroups` WHERE `ID` = $teachingGroupId;
+                SQL;
+
+            $db->query($sql);
         }
 
 

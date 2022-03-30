@@ -15,7 +15,7 @@
   <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2 overflow-auto" style="min-width: 25rem">
     <span class="display-6 text-center px-4 py-2" id="tasksContainer">Teaching Groups</span> <!--Has add button-->
     @yield('teachingGroups')
-  </div>
+    </div>
   <div class="bg-body text-dark d-inline-flex flex-column justify-content-center border rounded-3 shadow shadow-lg mx-3 my-2 overflow-auto" style="min-width: 25rem">
     <span class="display-6 text-center px-4 py-2" id="feedbackContainer">Awaiting Feedback</span>
   </div>
